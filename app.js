@@ -1,16 +1,16 @@
 import express from 'express';
-import config from './src/configs/config.js'
-import { products } from './src/mocks/products.js'
+import productsRouter from './src/routes/products.router.js';
+import cartsRouter from './src/routes/carts.router.js';
+import config from './src/configs/config.js';
 
 const app = express();
-
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
 
-app.get('/', (req,res) => {
-    res.status(200).send({origin: 'server 1', payload: products})
-})
+app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter);
+app.use('/static', express.static(`${config.DIRNAME}/public`));
 
+// Iniciar el servidor
 app.listen(config.PORT, () => {
-    console.log(`App activa en puerto ${config.PORT}`);
+  console.log(`Servidor escuchando en el puerto http://localhost:${config.PORT}/`);
 });
